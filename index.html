@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL_ACCESS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root { --neon-pink: #e91e63; --bg-dark: #0a0a0a; --hud-border: rgba(233, 30, 99, 0.4); }
+        
+        body { 
+            background-color: var(--bg-dark); color: white; font-family: 'Fira Code', monospace;
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; overflow: hidden; position: relative;
+            transition: opacity 0.6s ease; opacity: 1;
+        }
+        body.fade-out { opacity: 0; transform: scale(1.05); }
+
+        .login-box {
+            width: 90%; max-width: 350px; background: rgba(255, 255, 255, 0.02);
+            padding: 30px; border: 1px solid var(--hud-border); border-radius: 5px;
+            text-align: center; backdrop-filter: blur(10px); z-index: 10;
+            box-sizing: border-box; animation: fadeIn 0.8s ease-out;
+        }
+
+        .password-container { position: relative; width: 100%; margin: 20px 0; }
+        
+        input {
+            width: 100%; padding: 14px 50px 14px 14px;
+            background: rgba(0,0,0,0.6); border: 1px solid var(--hud-border);
+            color: var(--neon-pink); font-family: 'Fira Code', monospace;
+            outline: none; box-sizing: border-box; font-size: 1rem;
+        }
+
+        /* Göz İkonu Butonu */
+        .toggle-password {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: transparent; border: none; color: var(--hud-border);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .toggle-password:hover { color: var(--neon-pink); }
+        .material-icons { font-size: 20px; }
+
+        .main-btn {
+            width: 100%; padding: 14px; background-color: var(--neon-pink);
+            color: white; border: none; cursor: pointer; font-family: 'Fira Code', monospace;
+            font-weight: 600; transition: 0.3s; letter-spacing: 1px;
+        }
+        .main-btn:hover { box-shadow: 0 0 20px var(--neon-pink); background: #ff4081; }
+
+        .hint-btn { background: none; border: 1px solid #333; color: #555; font-size: 0.7rem; margin-top: 25px; cursor: pointer; padding: 5px 10px; }
+        .hint-content { max-height: 0; overflow: hidden; transition: 0.5s; font-size: 0.8rem; color: #888; margin-top: 10px; }
+        .hint-content.active { max-height: 50px; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div style="font-size: 0.7rem; color: var(--neon-pink); margin-bottom: 10px; letter-spacing: 2px;">> SECURE_LOGIN_v3.2</div>
+        
+        <div class="password-container">
+            <input type="password" id="sifre" placeholder="PASS_CODE:">
+            <button type="button" class="toggle-password" onclick="togglePass()">
+                <span id="eyeIcon" class="material-icons">visibility</span>
+            </button>
+        </div>
+        
+        <button class="main-btn" onclick="sifreKontrol()">SİSTEME GİRİŞ YAP</button>
+        <p id="mesaj" style="color: #ff4757; font-size: 0.7rem; margin-top: 10px; min-height: 15px;"></p>
+
+        <button class="hint-btn" onclick="toggleHint()">UNUTTUN MU? [İPUCU]</button>
+        <div id="hintArea" class="hint-content">Sevgili olduğumuz tarih ❤️</div>
+    </div>
+
+    <script>
+        function togglePass() {
+            const input = document.getElementById('sifre');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "visibility_off"; // Gözü kapatma ikonu
+            } else {
+                input.type = "password";
+                icon.textContent = "visibility"; // Gözü açma ikonu
+            }
+        }
+
+        function toggleHint() { document.getElementById('hintArea').classList.toggle('active'); }
+
+        function sifreKontrol() {
+            if (document.getElementById('sifre').value === "22082025") {
+                document.body.classList.add('fade-out');
+                setTimeout(() => { window.location.href = 'menu.html'; }, 600);
+            } else {
+                const msg = document.getElementById('mesaj');
+                msg.textContent = "[HATA: YANLIS_KOD_TEKRAR_DENEYIN]";
+                msg.style.animation = "shake 0.3s";
+                setTimeout(() => { msg.style.animation = ""; }, 300);
+            }
+        }
+    </script>
+</body>
+</html>

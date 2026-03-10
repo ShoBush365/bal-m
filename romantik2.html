@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMORY_LOG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+/* Geçiş Animasyonu */
+body {
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+}
+
+body.fade-out {
+    opacity: 0;
+    filter: blur(5px) grayscale(100%); /* Hafif bulanıklık ve siyah-beyaz efekti */
+}
+
+/* Sayfa ilk açıldığında yavaşça belirme */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(1.02); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.container, .login-box, .menu-container {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+        :root { --main-red: #D21B63; --bg-dark: #0a0a0a; }
+        body {
+            margin: 0; background-color: var(--bg-dark); color: #eee;
+            font-family: 'Fira Code', monospace; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; transition: opacity 0.8s ease; opacity: 1;
+        }
+        body.fade-out { opacity: 0; }
+
+        .hud-data { position: fixed; font-size: 0.7rem; color: var(--main-red); padding: 15px; z-index: 101; pointer-events: none; }
+        .top-left { top: 0; left: 0; }
+        .bottom-right { bottom: 0; right: 0; text-align: right; }
+
+        .container {
+            width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(210, 27, 99, 0.3); padding: 30px;
+            text-align: center; z-index: 10; box-sizing: border-box;
+        }
+
+        .timer { display: flex; justify-content: space-around; margin: 25px 0; }
+        .time-unit span { font-size: 1.5em; font-weight: bold; color: white; display: block; }
+        .time-unit small { font-size: 0.6em; color: var(--main-red); }
+
+        /* Gizli Mesaj Bölümü */
+        .secret-btn {
+            background: transparent; border: 1px solid var(--main-red);
+            color: var(--main-red); padding: 8px 15px; cursor: pointer; font-family: 'Fira Code';
+        }
+        .secret-content { max-height: 0; overflow: hidden; transition: 0.5s; margin-top: 15px; color: #ccc; font-style: italic; font-size: 0.9rem; }
+        .secret-content.active { max-height: 100px; padding-top: 10px; border-top: 1px solid #333; }
+
+        .heart-particle { position: absolute; color: var(--main-red); pointer-events: none; animation: flyUp 4s linear forwards; }
+        @keyframes flyUp {
+            0% { transform: translateY(10vh) scale(0); opacity: 0; }
+            10% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { transform: translateY(-110vh) scale(0.5); opacity: 0; }
+        }
+        
+        .back-btn { position: fixed; bottom: 20px; left: 20px; color: #444; font-size: 0.7rem; cursor: pointer; border: none; background: none; }
+    </style>
+</head>
+<body>
+    <div class="hud-data top-left">> STATUS: LOGGED_IN<br>> SESSION: ACTIVE</div>
+    <div class="hud-data bottom-right">SYNC: 100%<br>V2.1</div>
+
+    <div class="container">
+        <h1 style="font-family: 'Dancing Script'; color: var(--main-red);">Sadece Senin İçin ❤️</h1>
+        <div class="timer">
+            <div class="time-unit"><span id="days">00</span><small>GÜN</small></div>
+            <div class="time-unit"><span id="hours">00</span><small>SAAT</small></div>
+            <div class="time-unit"><span id="minutes">00</span><small>DAK</small></div>
+            <div class="time-unit"><span id="seconds">00</span><small>SN</small></div>
+        </div>
+        
+        <button class="secret-btn" onclick="toggleSecret()">DECODE_MESSAGE</button>
+        <div id="secretArea" class="secret-content">Bazen kelimeler yetmez, seni her saniye daha çok seviyorum... ❤️</div>
+    </div>
+
+    <button class="back-btn" onclick="goBack()">[GERI_DON]</button>
+
+    <script>
+        const startDate = new Date("Aug 22, 2025 00:00:00").getTime();
+        function update() {
+            const d = new Date().getTime() - startDate;
+            document.getElementById("days").innerText = Math.floor(d / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((d / (1000 * 60 * 60)) % 24);
+            document.getElementById("minutes").innerText = Math.floor((d / (1000 * 60)) % 60);
+            document.getElementById("seconds").innerText = Math.floor((d / 1000) % 60);
+        }
+        setInterval(update, 1000);
+        function toggleSecret() { document.getElementById('secretArea').classList.toggle('active'); }
+        
+        function goBack() {
+            document.body.classList.add('fade-out');
+            setTimeout(() => { window.location.href = 'menu.html'; }, 800);
+        }
+
+        function createHeart() {
+            const h = document.createElement('div'); h.innerHTML = '❤️'; h.classList.add('heart-particle');
+            h.style.left = Math.random() * 100 + 'vw'; h.style.bottom = '-10vh';
+            document.body.appendChild(h); setTimeout(() => h.remove(), 4000);
+        }
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
